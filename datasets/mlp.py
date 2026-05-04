@@ -1,24 +1,19 @@
 from benchopt import BaseDataset
-import numpy as np
 import torch.nn as nn
 import torch
 
 
-class MLPDataset(torch.utils.data.Dataset):
+class MLPDataset:
     def __init__(self, d):
         self.d = d
-        rng = np.random.RandomState(42)
-        self.W_linear = rng.randn(self.d, self.d)
 
-    def __len__(self):
-        return 100_000_000
-
-    def __getitem__(self, idx):
-        if isinstance(idx, int):
-            idx = [idx]
-        X = torch.randn(len(idx), self.d)
-        Y = torch.randn_like(X)
-        return X, Y
+    def get_dataloader(self, batch_size=32):
+        def get_batch():
+            for _ in range(10000):
+                x = torch.randn(batch_size, self.d)
+                y = torch.randn_like(x)
+                yield x, y
+        return get_batch()
 
 
 class MLP(nn.Module):

@@ -151,12 +151,10 @@ class Dataset(BaseDataset):
             vocab_size=50304, n_layer=12, n_head=12, n_embd=768,
             # max_seq_len=4*64*1024 - This is for Rotary Positional Embedding
         )
-        model = GPT(config)
 
-        # The dictionary defines the keyword arguments for `Objective.set_data`
         return dict(
             dataset=FinewebDataset(
                 str(data_dir / "fineweb_train_*.bin")
             ),
-            model=model,
+            model=GPT(config),
         )

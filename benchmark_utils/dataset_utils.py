@@ -3,6 +3,10 @@ from torch.utils.data.distributed import DistributedSampler
 
 
 def get_dataloader(dataset, batch_size):
+
+    if hasattr(dataset, "get_dataloader"):
+        return dataset.get_dataloader(batch_size=batch_size)
+
     sampler = DistributedSampler(dataset)
     dataloader = DataLoader(
         dataset,
