@@ -62,7 +62,6 @@ def get_max_batch_size(model, dataset, device):
             "Try lowering local_batch_size in solver parameters."
         )
 
-    if dist.get_rank() == 0:
-        print(f"Using maximized local_batch_size={last_valid}")
+    print(f"Using maximized local_batch_size={last_valid}")
 
     return last_valid
