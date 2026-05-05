@@ -76,7 +76,7 @@ class Solver(BaseSolver):
         for batch in dataloader:
             optim.zero_grad()
 
-            batch = [x.to(self.device, non_blocking=True) for x in batch]
+            batch = [x.to(self.device) for x in batch]
             loss, *_ = model(*batch)
             loss.backward()
 
@@ -104,7 +104,7 @@ class Solver(BaseSolver):
             for batch in dataloader:
                 optim.zero_grad()
 
-                batch = [x.to(self.device, non_blocking=True) for x in batch]
+                batch = [x.to(self.device) for x in batch]
                 loss, *_ = model(*batch)
                 loss.backward()
 
