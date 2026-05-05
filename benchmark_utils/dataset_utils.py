@@ -15,7 +15,5 @@ def get_dataloader(dataset, batch_size):
         shuffle=False,
         num_workers=4,
         persistent_workers=True,
-        prefetch_factor=4,
-        pin_memory=True,
     )
     return dataloader
