@@ -7,12 +7,15 @@ def get_dataloader(dataset, batch_size):
     if hasattr(dataset, "get_dataloader"):
         return dataset.get_dataloader(batch_size=batch_size)
 
-    sampler = DistributedSampler(dataset)
+    sampler = DistributedSampler(dataset, shuffle=False)
     dataloader = DataLoader(
         dataset,
         batch_size=batch_size,
         sampler=sampler,
         shuffle=False,
-        num_workers=0
+        num_workers=4,
+        persistent_workers=True,
+        prefetch_factor=4,
+        pin_memory=True,
     )
     return dataloader
