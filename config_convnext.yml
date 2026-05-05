@@ -1,0 +1,27 @@
+objective:
+  all-reduce:
+    device: "cuda"
+
+dataset:
+  convnext:
+    variant: convnextv2_tiny
+    image_size: 64
+    num_classes: 10
+
+solver:
+  all-reduce:
+    local_batch_size: [-1]
+    lr: [1e-3]
+    slurm_nodes: [1]
+  all-reduce-nolock:
+    local_batch_size: [-1]
+    lr: [1e-3]
+    slurm_nodes: [1]
+  ddp:
+    local_batch_size: [-1]
+    lr: [1e-3]
+    slurm_nodes: [1]
+
+parallel_config: config_parallel_nanogpt.yml
+n_repetitions: 1
+timeout: 100000

@@ -34,6 +34,10 @@ class Plot(BasePlot):
                 comm_times_ddp = [communication_times[i] - (run_times[i] - run_times_ddp[i]) for i in range(len(run_times_ddp))]
                 communication_ratio_ddp = [max(0, comm_time) / run_time for comm_time, run_time in zip(comm_times_ddp, run_times_ddp) if run_time > 0]
 
+                # Unit in percentage
+                communication_ratio = [ratio * 100 for ratio in communication_ratio]
+                communication_ratio_ddp = [ratio * 100 for ratio in communication_ratio_ddp]
+
                 dataset_short = dataset.split('[')[0]
                 if display_method in ["all-reduce", "both"]:
                     plot_data.append({
