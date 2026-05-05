@@ -8,17 +8,17 @@ dataset:
 
 solver:
   all-reduce:
-    local_batch_size: [-1]
+    local_batch_size: [32]
     lr: [1e-3]
-    slurm_nodes: [1]
+    slurm_nodes: [1, 2]
   all-reduce-nolock:
-    local_batch_size: [-1]
+    local_batch_size: [32]
     lr: [1e-3]
-    slurm_nodes: [1]
+    slurm_nodes: [1, 2]
   ddp:
-    local_batch_size: [-1]
+    local_batch_size: [32]
     lr: [1e-3]
-    slurm_nodes: [1]
+    slurm_nodes: [1, 2]
 
 parallel_config: config_parallel_nanogpt_h100.yml
 n_repetitions: 1
