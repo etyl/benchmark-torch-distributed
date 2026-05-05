@@ -13,7 +13,6 @@ def get_dataloader(dataset, batch_size):
         batch_size=batch_size,
         sampler=sampler,
         shuffle=False,
-        num_workers=4,
-        persistent_workers=True,
+        num_workers=0,
     )
     return dataloader
