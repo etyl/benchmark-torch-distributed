@@ -7,24 +7,25 @@ import torch.nn.functional as F
 from torch.utils.data import Dataset as TorchDataset
 
 from torchvision import transforms
-from torchvision.datasets import CIFAR10
+from torchvision.datasets import Food101
 
 import timm
 
 
-_CIFAR10_MEAN = (0.4914, 0.4822, 0.4465)
-_CIFAR10_STD = (0.2470, 0.2435, 0.2616)
+_IMAGENET_MEAN = (0.485, 0.456, 0.406)
+_IMAGENET_STD = (0.229, 0.224, 0.225)
 
 
-class CIFAR10Dataset(TorchDataset):
-    def __init__(self, root, train=True, image_size=64, download=True):
+class Food101Dataset(TorchDataset):
+    def __init__(self, root, train=True, image_size=224, download=True):
         transform = transforms.Compose([
-            transforms.Resize(image_size),
+            transforms.Resize((image_size, image_size)),
             transforms.ToTensor(),
-            transforms.Normalize(_CIFAR10_MEAN, _CIFAR10_STD),
+            transforms.Normalize(_IMAGENET_MEAN, _IMAGENET_STD),
         ])
-        self._inner = CIFAR10(
-            root=str(root), train=train, download=download, transform=transform,
+        self._inner = Food101(
+            root=str(root), split="train" if train else "test",
+            download=download, transform=transform,
         )
 
     def __len__(self):
@@ -36,7 +37,7 @@ class CIFAR10Dataset(TorchDataset):
 
 
 class ConvNeXtV2Wrapper(nn.Module):
-    def __init__(self, variant="convnextv2_tiny", num_classes=10):
+    def __init__(self, variant="convnextv2_tiny", num_classes=1000):
         super().__init__()
         self.backbone = timm.create_model(
             variant, pretrained=False, num_classes=num_classes,
@@ -53,15 +54,15 @@ class Dataset(BaseDataset):
 
     parameters = {
         "variant": ["convnextv2_tiny"],
-        "image_size": [64],
-        "num_classes": [10],
+        "image_size": [224],
+        "num_classes": [101],
     }
 
     requirements = ["timm", "torchvision"]
 
     def get_data(self):
-        data_dir = get_data_path("cifar10")
-        dataset = CIFAR10Dataset(
+        data_dir = get_data_path("food101")
+        dataset = Food101Dataset(
             root=data_dir, train=True,
             image_size=self.image_size, download=True,
         )
