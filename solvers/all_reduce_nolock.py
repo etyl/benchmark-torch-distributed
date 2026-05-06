@@ -8,7 +8,7 @@ import torch.distributed as dist
 from benchmark_utils.dataset_utils import get_dataloader
 from benchmark_utils.batch_size_probe import get_max_batch_size
 
-
+# TODO move to utils
 def setup_distributed(device):
     """Maps SLURM variables to PyTorch DDP variables and initializes the process group."""
     if "SLURM_PROCID" in os.environ:
@@ -36,6 +36,7 @@ def setup_distributed(device):
 class Solver(BaseSolver):
     name = "all-reduce-nolock"
 
+    # TODO rm lr
     parameters = {
         "local_batch_size": [-1],
         "lr": [1e-3],
