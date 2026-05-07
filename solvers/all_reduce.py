@@ -7,38 +7,13 @@ import torch.distributed as dist
 
 from benchmark_utils.dataset_utils import get_dataloader
 from benchmark_utils.batch_size_probe import get_max_batch_size
-
-
-def setup_distributed(device):
-    """Maps SLURM variables to PyTorch DDP variables and initializes the process group."""
-    if "SLURM_PROCID" in os.environ:
-        os.environ["RANK"] = os.environ["SLURM_PROCID"]
-        os.environ["LOCAL_RANK"] = os.environ["SLURM_LOCALID"]
-        os.environ["WORLD_SIZE"] = os.environ["SLURM_NTASKS"]
-
-    # NCCL debugging environment variables
-    # os.environ["NCCL_DEBUG"] = "INFO"
-    # os.environ["NCCL_DEBUG_SUBSYS"] = "INIT,TUNING"
-
-    # Check if dist is already initialized to avoid reinitialization
-    if dist.is_initialized():
-        return
-
-    if device.startswith("cuda"):
-        dist.init_process_group(backend="nccl", init_method="env://")
-    elif device == "cpu":
-        dist.init_process_group(backend="gloo", init_method="env://")
-    else:
-        raise ValueError(f"Unsupported device: {device}")
-
+from benchmark_utils.distributed_utils import setup_distributed
 
 
 class Solver(BaseSolver):
     name = "all-reduce"
 
     parameters = {
-        "local_batch_size": [-1],
-        "lr": [1e-3],
         "slurm_nodes": [2]
     }
 
@@ -46,10 +21,11 @@ class Solver(BaseSolver):
 
     sampling_strategy = "run_once"
 
-    def set_objective(self, dataset, model, device):
+    def set_objective(self, dataset, model, device, local_batch_size):
         self.device = device
         self.dataset = dataset
         self.model = model
+        self.local_batch_size = local_batch_size
 
     def run(self, _):
         setup_distributed(self.device)
@@ -70,7 +46,7 @@ class Solver(BaseSolver):
             end_run = torch.cuda.Event(enable_timing=True)
             end_com = torch.cuda.Event(enable_timing=True)
 
-        optim = torch.optim.Adam(model.parameters(), lr=float(self.lr))
+        optim = torch.optim.Adam(model.parameters(), lr=float(0.01))
 
         self.logs = defaultdict(list)
 

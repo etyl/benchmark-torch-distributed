@@ -1,6 +1,7 @@
 objective:
   all-reduce:
     device: "cuda"
+    local_batch_size: [32]
 
 dataset:
   nanogpt:
@@ -8,18 +9,12 @@ dataset:
 
 solver:
   all-reduce:
-    local_batch_size: [32]
-    lr: [1e-3]
     slurm_nodes: [1, 2, 4, 8]
   all-reduce-nolock:
-    local_batch_size: [32]
-    lr: [1e-3]
     slurm_nodes: [1, 2, 4, 8]
   ddp:
-    local_batch_size: [32]
-    lr: [1e-3]
     slurm_nodes: [1, 2, 4, 8]
 
-parallel_config: config_parallel_nanogpt_h100.yml
+parallel_config: config_parallel_h100.yml
 n_repetitions: 10
 timeout: 100000

@@ -47,7 +47,6 @@ class CausalSelfAttention(nn.Module):
         q = q.view(B, T, self.n_head, C // self.n_head).transpose(1, 2)
         v = v.view(B, T, self.n_head, C // self.n_head).transpose(1, 2)
 
-        # TODO: use the flex attention from torch.nn.attention.flex_attention?
         y = F.scaled_dot_product_attention(q, k, v, is_causal=True)
         # re-assemble all head outputs side by side
         y = y.transpose(1, 2).contiguous().view(B, T, C)

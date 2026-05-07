@@ -8,6 +8,7 @@ class Objective(BaseObjective):
 
     parameters = {
         "device": ["cpu"],
+        "local_batch_size": [-1],
     }
 
     def set_data(self, dataset, model):
@@ -29,5 +30,6 @@ class Objective(BaseObjective):
         return dict(
             dataset=copy.deepcopy(self.dataset),
             model=copy.deepcopy(self.model),
-            device=self.device
+            device=self.device,
+            local_batch_size=self.local_batch_size,
         )

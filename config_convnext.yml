@@ -1,27 +1,21 @@
 objective:
   all-reduce:
     device: "cuda"
+    local_batch_size: [64]
 
 dataset:
   convnext:
     variant: convnextv2_tiny
     image_size: 224
-    num_classes: 101
 
 solver:
   all-reduce:
-    local_batch_size: [64]
-    lr: [1e-3]
     slurm_nodes: [1, 2, 4, 8]
   all-reduce-nolock:
-    local_batch_size: [64]
-    lr: [1e-3]
     slurm_nodes: [1, 2, 4, 8]
   ddp:
-    local_batch_size: [64]
-    lr: [1e-3]
     slurm_nodes: [1, 2, 4, 8]
 
-parallel_config: config_parallel_nanogpt.yml
+parallel_config: config_parallel_v100.yml
 n_repetitions: 10
 timeout: 100000

@@ -55,7 +55,6 @@ class Dataset(BaseDataset):
     parameters = {
         "variant": ["convnextv2_tiny"],
         "image_size": [224],
-        "num_classes": [101],
     }
 
     requirements = ["timm", "torchvision"]
@@ -67,6 +66,6 @@ class Dataset(BaseDataset):
             image_size=self.image_size, download=True,
         )
         model = ConvNeXtV2Wrapper(
-            variant=self.variant, num_classes=self.num_classes,
+            variant=self.variant, num_classes=101,
         )
         return dict(dataset=dataset, model=model)
