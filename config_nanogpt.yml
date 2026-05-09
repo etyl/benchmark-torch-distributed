@@ -15,6 +15,6 @@ solver:
   ddp:
     slurm_nodes: [1, 2, 4, 8]
 
-parallel_config: config_parallel_h100.yml
-n_repetitions: 10
+parallel_config: config_parallel_v100.yml
+n_repetitions: 1
 timeout: 100000

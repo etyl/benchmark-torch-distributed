@@ -31,7 +31,13 @@ class Solver(BaseSolver):
         setup_distributed(self.device)
         local_rank = int(os.environ["LOCAL_RANK"])
         torch.cuda.set_device(local_rank)
-        model = torch.nn.parallel.DistributedDataParallel(self.model.to(device=self.device), device_ids=[local_rank])
+        model = torch.nn.parallel.DistributedDataParallel(
+            self.model.to(device=self.device),
+            device_ids=[local_rank],
+            broadcast_buffers=False,
+            gradient_as_bucket_view=True,
+            static_graph=True,
+        )
         if self.local_batch_size == -1:
             selected_batch_size = get_max_batch_size(model, self.dataset, self.device)
         else:
@@ -49,7 +55,7 @@ class Solver(BaseSolver):
         for batch in dataloader:
             optim.zero_grad()
 
-            batch = [x.to(self.device) for x in batch]
+            batch = [x.to(self.device, non_blocking=True) for x in batch]
             loss, *_ = model(*batch)
             loss.backward()
             optim.step()
@@ -68,7 +74,7 @@ class Solver(BaseSolver):
             for batch in dataloader:
                 optim.zero_grad()
 
-                batch = [x.to(self.device) for x in batch]
+                batch = [x.to(self.device, non_blocking=True) for x in batch]
                 loss, *_ = model(*batch)
                 loss.backward()
 
