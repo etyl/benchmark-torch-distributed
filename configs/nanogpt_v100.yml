@@ -1,7 +1,7 @@
 objective:
   all-reduce:
     device: "cuda"
-    local_batch_size: [32]
+    local_batch_size: [16]
 
 dataset:
   nanogpt:

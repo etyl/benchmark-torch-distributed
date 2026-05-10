@@ -1,0 +1,20 @@
+objective:
+  all-reduce:
+    device: "cuda"
+    local_batch_size: [32]
+
+dataset:
+  nanogpt:
+    n_chunks: 4
+
+solver:
+  all-reduce:
+    slurm_nodes: [1, 2, 4, 8]
+  all-reduce-nolock:
+    slurm_nodes: [1, 2, 4, 8]
+  ddp:
+    slurm_nodes: [1, 2, 4, 8]
+
+parallel_config: config_parallel_h100.yml
+n_repetitions: 1
+timeout: 100000
