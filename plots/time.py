@@ -45,4 +45,5 @@ class Plot(BasePlot):
     def get_metadata(self, df, objective, dataset, metric):
         return {
             "title": f"{metric}\n{objective}\nData: {dataset}",
+            "ylabel": "Time (s)",
         }

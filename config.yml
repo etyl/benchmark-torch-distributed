@@ -5,12 +5,10 @@ plot_configs:
     plot_kind: communication_ratio
     scale: linear
   Run Time:
-    metrics_objective: all-reduce[device=cuda]
     metrics_metric: run_time
     plot_kind: metrics
     scale: linear
   Communication Time:
-    metrics_objective: all-reduce[device=cuda]
     metrics_metric: comm_time
     plot_kind: metrics
     scale: linear
