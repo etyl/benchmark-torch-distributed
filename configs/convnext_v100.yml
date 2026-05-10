@@ -17,5 +17,5 @@ solver:
     slurm_nodes: [1, 2, 4, 8]
 
 parallel_config: config_parallel_v100.yml
-n_repetitions: 1
+n_repetitions: 10
 timeout: 100000
