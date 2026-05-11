@@ -4,10 +4,11 @@ plot_configs:
   Communication Ratio:
     plot_kind: communication_ratio
     scale: linear
+    display_method: both
   Run Time:
-    metrics_metric: run_time
-    plot_kind: metrics
-    scale: linear
+    plot_kind: run_curves
+    scale: semilog-x
+    with_quantiles: true
   Communication Time:
     metrics_metric: comm_time
     plot_kind: metrics
