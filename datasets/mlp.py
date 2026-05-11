@@ -7,7 +7,7 @@ class MLPDataset:
     def __init__(self, d):
         self.d = d
 
-    def get_dataloader(self, batch_size=32):
+    def get_dataloader(self, batch_size):
         def get_batch():
             for _ in range(10000):
                 x = torch.randn(batch_size, self.d)

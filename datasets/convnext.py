@@ -16,7 +16,7 @@ _IMAGENET_MEAN = (0.485, 0.456, 0.406)
 _IMAGENET_STD = (0.229, 0.224, 0.225)
 
 
-class Food101Dataset(TorchDataset):
+class Food101Dataset:
     def __init__(self, root, train=True, image_size=224, download=True):
         transform = transforms.Compose([
             transforms.Resize((image_size, image_size)),
@@ -34,6 +34,14 @@ class Food101Dataset(TorchDataset):
     def __getitem__(self, idx):
         img, label = self._inner[idx]
         return img, torch.tensor(label, dtype=torch.long)
+
+    def get_dataloader(self, batch_size):
+        def get_batch():
+            for _ in range(10000):
+                x = torch.randn(batch_size, 224, 224, 3)
+                y = torch.randn(batch_size, 101)
+                yield x, y
+        return get_batch()
 
 
 class ConvNeXtV2Wrapper(nn.Module):
