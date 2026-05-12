@@ -23,7 +23,7 @@ class Food101Dataset:
     def get_dataloader(self, batch_size):
         def get_batch():
             for _ in range(10000):
-                x = torch.randn(batch_size, 224, 224, 3)
+                x = torch.randn(batch_size, 3, 224, 224)
                 y = torch.randn(batch_size, 101)
                 yield x, y
         return get_batch()
