@@ -18,22 +18,7 @@ _IMAGENET_STD = (0.229, 0.224, 0.225)
 
 class Food101Dataset:
     def __init__(self, root, train=True, image_size=224, download=True):
-        transform = transforms.Compose([
-            transforms.Resize((image_size, image_size)),
-            transforms.ToTensor(),
-            transforms.Normalize(_IMAGENET_MEAN, _IMAGENET_STD),
-        ])
-        self._inner = Food101(
-            root=str(root), split="train" if train else "test",
-            download=download, transform=transform,
-        )
-
-    def __len__(self):
-        return len(self._inner)
-
-    def __getitem__(self, idx):
-        img, label = self._inner[idx]
-        return img, torch.tensor(label, dtype=torch.long)
+        pass
 
     def get_dataloader(self, batch_size):
         def get_batch():
